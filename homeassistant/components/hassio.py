@@ -18,6 +18,7 @@ from homeassistant.config import load_yaml_config_file
 from homeassistant.components.http import HomeAssistantView
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
+from homeassistant.components.frontend import register_built_in_panel
 
 DOMAIN = 'hassio'
 DEPENDENCIES = ['http']
@@ -156,6 +157,10 @@ def async_setup(hass, config):
         hass.services.async_register(
             DOMAIN, service, async_service_handler,
             descriptions[DOMAIN][service], schema=schema)
+
+    if 'frontend' in hass.config.components:
+        register_built_in_panel(hass, 'hassio', 'Hass.io',
+                                'mdi:access-point-network')
 
     return True
 
